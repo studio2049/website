@@ -63,48 +63,28 @@
             border: 1px solid #334155; /* Slate-700 */
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        /* --- START: Card Flip Styles --- */
-        .flip-card {
-            background-color: transparent;
-            width: 100%;
-            height: 280px; /* Fixed height for consistency */
-            perspective: 1000px; /* Enables the 3D effect */
+
+        /* --- REMOVED: Card Flip Styles --- */
+
+        /* +++ ADDED: New styles for the expanding card effect +++ */
+        .expanding-card {
+            transition: all 0.7s ease-in-out;
+            background-size: cover;
+            background-position: center;
         }
-        .flip-card-inner {
-            position: relative;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.7s;
-            transform-style: preserve-3d;
+        .expanding-card .card-content {
+            transition: opacity 0.5s ease-in-out;
         }
-        .flip-card:hover .flip-card-inner {
-            transform: rotateY(180deg); /* The flip animation on hover */
+        .expanding-card .card-description {
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-in-out, opacity 0.5s ease-in-out 0.2s; /* Delay opacity transition */
         }
-        .flip-card-front, .flip-card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden; /* For Safari */
-            backface-visibility: hidden;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem; /* p-8 */
-            border-radius: 0.75rem; /* rounded-xl */
-            background-color: #1e293b; /* Slate-800 */
-            border: 1px solid #334155; /* Slate-700 */
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05); /* shadow-lg */
-        }
-        .flip-card-back {
-            transform: rotateY(180deg); /* Hides the back side initially */
-        }
-        /* --- END: Card Flip Styles --- */
-        .icon-placeholder { /* Simple SVG icon */
+        .icon-placeholder { 
             width: 48px;
             height: 48px;
-            stroke: #60a5fa; /* Light blue */
+            stroke: #60a5fa;
         }
         @keyframes subtleShimmer {
             0% { background-position: 0% 50%; }
@@ -112,7 +92,7 @@
             100% { background-position: 0% 50%; }
         }
         .hero-bg-animated {
-            background: linear-gradient(270deg, #0a0f1f, #111827, #0a0f1f); /* Dark shades */
+            background: linear-gradient(270deg, #0a0f1f, #111827, #0a0f1f);
             background-size: 600% 600%;
             animation: subtleShimmer 16s ease infinite;
         }
@@ -125,29 +105,27 @@
             pointer-events: none;
             z-index: -1;
         }
-        /* Modal Styles */
         .modal-overlay {
-            background-color: rgba(10, 15, 31, 0.8); /* Darker overlay */
+            background-color: rgba(10, 15, 31, 0.8);
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
         }
         .modal-content {
-            background-color: #111827; /* Dark Gray, slightly lighter than body */
-            border: 1px solid #334155; /* Slate-700 */
+            background-color: #111827;
+            border: 1px solid #334155;
         }
         .modal-input {
-            background-color: #1e293b; /* Slate-800 */
-            border: 1px solid #334155; /* Slate-700 */
+            background-color: #1e293b;
+            border: 1px solid #334155;
             color: #e0e0e0;
         }
         .modal-input:focus {
-            border-color: #3b82f6; /* Blue-500 */
-            ring: 1px;
-            ring-color: #3b82f6;
+            border-color: #3b82f6;
+            --tw-ring-color: #3b82f6;
         }
         .loader {
-            border: 4px solid #334155; /* Slate-700 */
-            border-top: 4px solid #3b82f6; /* Blue-500 */
+            border: 4px solid #334155;
+            border-top: 4px solid #3b82f6;
             border-radius: 50%;
             width: 32px;
             height: 32px;
@@ -159,7 +137,7 @@
         }
     </style>
 </head>
-    <body class="antialiased">
+<body class="antialiased">
 
     <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 p-4 navbar-glass">
         <div class="container mx-auto flex justify-between items-center">
@@ -191,7 +169,6 @@
     <header id="home" class="min-h-screen flex items-center justify-center relative overflow-hidden hero-bg-animated pt-20 md:pt-0">
         <div class="glow-effect" style="top: 10%; left: 10%;"></div>
         <div class="glow-effect" style="bottom: 15%; right: 5%; width:400px; height:400px; background: radial-gradient(circle, rgba(52, 211, 153, 0.1) 0%, rgba(52, 211, 153, 0) 70%);"></div>
-
         <div class="container mx-auto px-6 text-center z-10">
             <h1 class="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold mb-6">
                 Unveiling <span class="hero-gradient-text">Future Insights</span><br class="hidden sm:block"/> with Data Intelligence
@@ -236,72 +213,61 @@
         </div>
     </div>
 
-
-     <section id="services" class="py-20">
+    <section id="services" class="py-20">
         <div class="container mx-auto px-6">
             <h2 class="text-3xl md:text-4xl font-bold text-center mb-4 section-title-underline mx-auto">Our Expertise</h2>
             <p class="text-center text-gray-400 mb-12 max-w-xl mx-auto">We translate complex data into actionable intelligence, driving innovation and growth.</p>
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-                
-                <div class="flip-card">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front">
-                            <div class="flex items-center justify-center mb-6 bg-slate-700 w-16 h-16 rounded-full">
+            
+            <div id="services-container" class="flex flex-col lg:flex-row justify-center items-center gap-4 w-full h-[450px] lg:h-[400px]">
+
+                <article class="expanding-card h-full w-full lg:w-auto rounded-2xl relative overflow-hidden cursor-pointer" style="background-image: url('https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop');">
+                    <div class="absolute inset-0 bg-black/60"></div>
+                    <div class="absolute bottom-0 left-0 w-full p-6 text-white z-10 card-content">
+                        <div class="flex items-center gap-4">
+                            <div class="flex-shrink-0 bg-slate-700/80 p-3 rounded-full">
                                 <svg class="icon-placeholder" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.5009 13.609L21.0399 12L17.5009 10.391M6.5 10.391L3 12L6.5 13.609M14.0199 6.082L10.0009 17.918" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                             </div>
-                            <h3 class="text-2xl font-semibold text-sky-400">Predictive Analytics</h3>
+                            <h3 class="text-2xl font-bold">Predictive Analytics</h3>
                         </div>
-                        <div class="flip-card-back">
-                            <h3 class="text-2xl font-semibold mb-3 text-sky-400">Predictive Analytics</h3>
-                            <p class="text-gray-400">Leverage the power of machine learning to stay ahead. Our predictive analytics solutions analyze patterns in your data to accurately forecast future trends, 
-                                reveal new business opportunities, and help you avoid potential risks. 
-                                Whether you're planning your next move or simply want to make smarter decisions with confidence, 
-                                we turn your data into valuable foresight.</p>
+                        <div class="card-description">
+                            <p class="text-gray-300 mt-4">Leverage the power of machine learning to stay ahead. Our predictive analytics solutions analyze patterns in your data to accurately forecast future trends, reveal new business opportunities, and help you avoid potential risks. Whether you're planning your next move or simply want to make smarter decisions with confidence, we turn your data into valuable foresight.</p>
                         </div>
                     </div>
-                </div>
+                </article>
 
-                <div class="flip-card">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front">
-                            <div class="flex items-center justify-center mb-6 bg-slate-700 w-16 h-16 rounded-full">
+                <article class="expanding-card h-full w-full lg:w-auto rounded-2xl relative overflow-hidden cursor-pointer" style="background-image: url('https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=2070&auto=format&fit=crop');">
+                    <div class="absolute inset-0 bg-black/60"></div>
+                    <div class="absolute bottom-0 left-0 w-full p-6 text-white z-10 card-content">
+                        <div class="flex items-center gap-4">
+                             <div class="flex-shrink-0 bg-slate-700/80 p-3 rounded-full">
                                 <svg class="icon-placeholder" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4H8V8H4V4ZM10 4H14V8H10V4ZM16 4H20V8H16V4ZM4 10H8V14H4V10ZM10 10H14V14H10V10ZM16 10H20V14H16V10ZM4 16H8V20H4V16ZM10 16H14V20H10V16ZM16 16H20V20H16V16Z" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                             </div>
-                            <h3 class="text-2xl font-semibold text-sky-400">Data Visualization</h3>
+                            <h3 class="text-2xl font-bold">Data Visualization</h3>
                         </div>
-                        <div class="flip-card-back">
-                            <h3 class="text-2xl font-semibold mb-3 text-sky-400">Data Visualization</h3>
-                            <p class="text-gray-400">Turn complex data into clear, visual stories. 
-                                We take raw numbers and transform them into easy-to-understand charts, dashboards, 
-                                and visuals that highlight what matters most. With our data visualization solutions, you can quickly grasp insights, 
-                                share findings with your team, and make decisions with confidence</p>
+                        <div class="card-description">
+                           <p class="text-gray-300 mt-4">Turn complex data into clear, visual stories. We take raw numbers and transform them into easy-to-understand charts, dashboards, and visuals that highlight what matters most. With our data visualization solutions, you can quickly grasp insights, share findings with your team, and make decisions with confidence.</p>
                         </div>
                     </div>
-                </div>
+                </article>
 
-                <div class="flip-card">
-                    <div class="flip-card-inner">
-                        <div class="flip-card-front">
-                            <div class="flex items-center justify-center mb-6 bg-slate-700 w-16 h-16 rounded-full">
+                <article class="expanding-card h-full w-full lg:w-auto rounded-2xl relative overflow-hidden cursor-pointer" style="background-image: url('https://images.unsplash.com/photo-1677756119517-756a188d2d94?q=80&w=2070&auto=format&fit=crop');">
+                    <div class="absolute inset-0 bg-black/60"></div>
+                    <div class="absolute bottom-0 left-0 w-full p-6 text-white z-10 card-content">
+                        <div class="flex items-center gap-4">
+                             <div class="flex-shrink-0 bg-slate-700/80 p-3 rounded-full">
                                 <svg class="icon-placeholder" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 8V12M12 16H12.01M8.58998 4.07001C9.68998 3.52001 10.84 3.24001 12 3.24001C16.83 3.24001 20.76 7.17001 20.76 12C20.76 16.83 16.83 20.76 12 20.76C7.17001 20.76 3.24001 16.83 3.24001 12C3.24001 10.38 3.66001 8.87001 4.38001 7.55001" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
                             </div>
-                            <h3 class="text-2xl font-semibold text-sky-400">AI & ML Solutions</h3>
+                            <h3 class="text-2xl font-bold">AI & ML Solutions</h3>
                         </div>
-                        <div class="flip-card-back">
-                            <h3 class="text-2xl font-semibold mb-3 text-sky-400">AI & ML Solutions</h3>
-                            <p class="text-gray-400">We design and build custom artificial intelligence and machine learning models tailored to your business needs. 
-                                Whether it's automating repetitive tasks, analyzing large amounts of data, or optimizing decision-making, 
-                                our solutions help you work smarter, faster, and more efficiently. 
-                                Unlock new levels of productivity and gain a competitive edge with the power of artificial intelligence and 
-                                machine learning algorithms.</p>
+                        <div class="card-description">
+                           <p class="text-gray-300 mt-4">We design and build custom artificial intelligence and machine learning models tailored to your business needs. Whether it's automating repetitive tasks, analyzing large amounts of data, or optimizing decision-making, our solutions help you work smarter, faster, and more efficiently. Unlock new levels of productivity and gain a competitive edge with the power of artificial intelligence and machine learning algorithms.</p>
                         </div>
                     </div>
-                </div>
-                
+                </article>
+
             </div>
         </div>
     </section>
-
     <section id="about" class="py-20 bg-slate-900">
         <div class="container mx-auto px-6">
             <div class="grid md:grid-cols-2 gap-12 items-center">
@@ -367,7 +333,7 @@
                          <div class="md:w-1/2 md:pr-8 md:hidden"></div>
                         <div class="hidden md:block absolute left-1/2 transform -translate-x-1/2 w-8 h-8 bg-sky-500 rounded-full border-4 border-slate-900"></div>
                         <div class="md:w-1/2 md:pl-8 md:text-left">
-                             <div class="card p-6 rounded-lg shadow-md">
+                              <div class="card p-6 rounded-lg shadow-md">
                                 <div class="text-sky-400 font-bold text-xl mb-2">04. Deployment & Iteration</div>
                                 <p class="text-gray-400 text-sm">Implementing solutions and continuously refining them based on performance and feedback.</p>
                             </div>
@@ -413,163 +379,213 @@
                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" /></svg>
                 </a>
                 <a href="#" class="hover:text-sky-400 transition duration-300">
-                     <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.286 2.865 7.92 6.737 9.363.49.09.667-.213.667-.473 0-.234-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.446-1.135-1.09-1.438-1.09-1.438-.89-.608.067-.596.067-.596.985.07 1.507 1.012 1.507 1.012.875 1.498 2.295 1.065 2.855.815.09-.633.342-1.065.62-1.31-2.17-.248-4.453-.975-4.453-4.83 0-.95.34-1.785.947-2.458-.095-.248-.41-1.164.09-2.425 0 0 .82-.263 2.687.998A9.388 9.388 0 0112 6.66c.85.004 1.705.114 2.504.337 1.867-1.26 2.684-.998 2.684-.998.502 1.26.187 2.177.092 2.425.61.673.945 1.508.945 2.458 0 3.865-2.287 4.58-4.46 4.822.35.308.656.922.656 1.857 0 1.34-.012 2.418-.012 2.746 0 .262.175.568.672.472A10.003 10.003 0 0022 12c0-5.523-4.477-10-10-10z" clip-rule="evenodd" /></svg>
+                      <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path fill-rule="evenodd" d="M12 2C6.477 2 2 6.477 2 12c0 4.286 2.865 7.92 6.737 9.363.49.09.667-.213.667-.473 0-.234-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.446-1.135-1.09-1.438-1.09-1.438-.89-.608.067-.596.067-.596.985.07 1.507 1.012 1.507 1.012.875 1.498 2.295 1.065 2.855.815.09-.633.342-1.065.62-1.31-2.17-.248-4.453-.975-4.453-4.83 0-.95.34-1.785.947-2.458-.095-.248-.41-1.164.09-2.425 0 0 .82-.263 2.687.998A9.388 9.388 0 0112 6.66c.85.004 1.705.114 2.504.337 1.867-1.26 2.684-.998 2.684-.998.502 1.26.187 2.177.092 2.425.61.673.945 1.508.945 2.458 0 3.865-2.287 4.58-4.46 4.822.35.308.656.922.656 1.857 0 1.34-.012 2.418-.012 2.746 0 .262.175.568.672.472A10.003 10.003 0 0022 12c0-5.523-4.477-10-10-10z" clip-rule="evenodd" /></svg>
                 </a>
             </div>
         </div>
     </footer>
 
     <script>
-        // --- Elements for AI Insights Modal ---
-        const openAiInsightsModalButton = document.getElementById('openAiInsightsModal');
-        const closeAiInsightsModalButton = document.getElementById('closeAiInsightsModal');
-        const aiInsightsModal = document.getElementById('aiInsightsModal');
-        const aiInsightsModalContent = aiInsightsModal.querySelector('.modal-content');
-        const aiQueryInput = document.getElementById('aiQueryInput');
-        const getAiInsightsButton = document.getElementById('getAiInsightsButton');
-        const aiInsightsResult = document.getElementById('aiInsightsResult');
-        const aiInsightsLoader = document.getElementById('aiInsightsLoader');
-        const aiInsightsError = document.getElementById('aiInsightsError');
+        // --- ALL JAVASCRIPT IS NOW WRAPPED IN DOMContentLoaded ---
+        document.addEventListener('DOMContentLoaded', () => {
 
-        // --- AI Insights Modal Logic ---
-        function showAiModal() {
-            aiInsightsModal.classList.remove('hidden');
-            // For transition effect
-            setTimeout(() => {
-                aiInsightsModalContent.classList.remove('scale-95', 'opacity-0');
-                aiInsightsModalContent.classList.add('scale-100', 'opacity-100');
-            }, 10);
-            aiQueryInput.focus();
-        }
+            // --- Elements for AI Insights Modal ---
+            const openAiInsightsModalButton = document.getElementById('openAiInsightsModal');
+            const closeAiInsightsModalButton = document.getElementById('closeAiInsightsModal');
+            const aiInsightsModal = document.getElementById('aiInsightsModal');
+            const aiInsightsModalContent = aiInsightsModal.querySelector('.modal-content');
+            const aiQueryInput = document.getElementById('aiQueryInput');
+            const getAiInsightsButton = document.getElementById('getAiInsightsButton');
+            const aiInsightsResult = document.getElementById('aiInsightsResult');
+            const aiInsightsLoader = document.getElementById('aiInsightsLoader');
+            const aiInsightsError = document.getElementById('aiInsightsError');
 
-        function hideAiModal() {
-            aiInsightsModalContent.classList.add('scale-95', 'opacity-0');
-            aiInsightsModalContent.classList.remove('scale-100', 'opacity-100');
-            setTimeout(() => {
-                aiInsightsModal.classList.add('hidden');
-                 // Reset modal state
-                aiQueryInput.value = '';
-                aiInsightsResult.innerHTML = '<p class="text-gray-500 italic">Your AI-generated insights will appear here...</p>';
-                aiInsightsLoader.classList.add('hidden');
-                aiInsightsError.classList.add('hidden');
-            }, 300); // Match transition duration
-        }
-
-        openAiInsightsModalButton.addEventListener('click', showAiModal);
-        closeAiInsightsModalButton.addEventListener('click', hideAiModal);
-        // Close modal if clicking on the overlay
-        aiInsightsModal.addEventListener('click', (event) => {
-            if (event.target === aiInsightsModal) {
-                hideAiModal();
-            }
-        });
-         // Close modal on Escape key
-        document.addEventListener('keydown', (event) => {
-            if (event.key === 'Escape' && !aiInsightsModal.classList.contains('hidden')) {
-                hideAiModal();
-            }
-        });
-
-
-        // --- Gemini API Call ---
-        getAiInsightsButton.addEventListener('click', async () => {
-            const userInput = aiQueryInput.value.trim();
-            if (!userInput) {
-                aiInsightsError.textContent = 'Please enter your industry or a business challenge.';
-                aiInsightsError.classList.remove('hidden');
-                setTimeout(() => aiInsightsError.classList.add('hidden'), 3000);
-                return;
+            // --- AI Insights Modal Logic ---
+            function showAiModal() {
+                aiInsightsModal.classList.remove('hidden');
+                setTimeout(() => {
+                    aiInsightsModalContent.classList.remove('scale-95', 'opacity-0');
+                    aiInsightsModalContent.classList.add('scale-100', 'opacity-100');
+                }, 10);
+                aiQueryInput.focus();
             }
 
-            aiInsightsLoader.classList.remove('hidden');
-            aiInsightsResult.innerHTML = '<p class="text-gray-500 italic">Generating insights...</p>';
-            aiInsightsError.classList.add('hidden');
-            getAiInsightsButton.disabled = true;
-
-            const prompt = `You are a data strategy consultant for Studio2049. A potential client is interested in how data can help their business. Their focus is on '${userInput}'. Provide 2-3 concise, futuristic, and actionable data strategy insights or key questions they should consider. Frame these as if you are giving initial high-level advice. Format the output as a list.`;
-
-            try {
-                let chatHistory = [];
-                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-                const payload = { contents: chatHistory };
-                const apiKey = ""; // API key will be injected by the environment
-                const apiUrl = \`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=\${apiKey}\`;
-
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
-                });
-
-                if (!response.ok) {
-                    const errorData = await response.json();
-                    console.error('Gemini API Error:', errorData);
-                    throw new Error(errorData.error?.message || `API request failed with status ${response.status}`);
-                }
-
-                const result = await response.json();
-
-                if (result.candidates && result.candidates.length > 0 &&
-                    result.candidates[0].content && result.candidates[0].content.parts &&
-                    result.candidates[0].content.parts.length > 0) {
-                    let text = result.candidates[0].content.parts[0].text;
-                    // Basic Markdown to HTML conversion for lists
-                    text = text.replace(/^\s*-\s+/gm, '<li class="mb-2 list-disc ml-5">');
-                    text = text.replace(/\n/g, ''); // remove newlines if any are left that aren't part of list items
-                    text = '<ul>' + text + '</ul>';
-                    aiInsightsResult.innerHTML = text;
-                } else {
-                    throw new Error("No content received from API or unexpected response structure.");
-                }
-            } catch (error) {
-                console.error('Error fetching AI insights:', error);
-                aiInsightsResult.innerHTML = ''; // Clear any previous results or loading text
-                aiInsightsError.innerHTML = \`<p>Failed to generate insights. \${error.message ? error.message : 'Please try again later.'}</p>\`;
-                aiInsightsError.classList.remove('hidden');
-            } finally {
-                aiInsightsLoader.classList.add('hidden');
-                getAiInsightsButton.disabled = false;
+            function hideAiModal() {
+                aiInsightsModalContent.classList.add('scale-95', 'opacity-0');
+                aiInsightsModalContent.classList.remove('scale-100', 'opacity-100');
+                setTimeout(() => {
+                    aiInsightsModal.classList.add('hidden');
+                    aiQueryInput.value = '';
+                    aiInsightsResult.innerHTML = '<p class="text-gray-500 italic">Your AI-generated insights will appear here...</p>';
+                    aiInsightsLoader.classList.add('hidden');
+                    aiInsightsError.classList.add('hidden');
+                }, 300);
             }
-        });
 
-
-        // --- Standard Page Scripts (Mobile menu, smooth scroll, etc.) ---
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const targetId = this.getAttribute('href');
-                // If it's the AI modal button, don't scroll, let modal logic handle it
-                if (targetId === '#aiInsightsModal') return;
-
-                const targetElement = document.querySelector(targetId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({
-                        behavior: 'smooth'
-                    });
-                    if (!mobileMenu.classList.contains('hidden')) {
-                        mobileMenu.classList.add('hidden');
+            if (openAiInsightsModalButton) {
+                openAiInsightsModalButton.addEventListener('click', showAiModal);
+            }
+            if (closeAiInsightsModalButton) {
+                closeAiInsightsModalButton.addEventListener('click', hideAiModal);
+            }
+            if (aiInsightsModal) {
+                aiInsightsModal.addEventListener('click', (event) => {
+                    if (event.target === aiInsightsModal) {
+                        hideAiModal();
                     }
+                });
+            }
+            document.addEventListener('keydown', (event) => {
+                if (event.key === 'Escape' && !aiInsightsModal.classList.contains('hidden')) {
+                    hideAiModal();
                 }
             });
-        });
 
-        document.getElementById('currentYear').textContent = new Date().getFullYear();
+            // --- Gemini API Call ---
+            if (getAiInsightsButton) {
+                getAiInsightsButton.addEventListener('click', async () => {
+                    const userInput = aiQueryInput.value.trim();
+                    if (!userInput) {
+                        aiInsightsError.textContent = 'Please enter your industry or a business challenge.';
+                        aiInsightsError.classList.remove('hidden');
+                        setTimeout(() => aiInsightsError.classList.add('hidden'), 3000);
+                        return;
+                    }
 
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 50) {
-                navbar.classList.add('shadow-lg');
-            } else {
-                navbar.classList.remove('shadow-lg');
+                    aiInsightsLoader.classList.remove('hidden');
+                    aiInsightsResult.innerHTML = '<p class="text-gray-500 italic">Generating insights...</p>';
+                    aiInsightsError.classList.add('hidden');
+                    getAiInsightsButton.disabled = true;
+
+                    const prompt = `You are a data strategy consultant for Studio2049. A potential client is interested in how data can help their business. Their focus is on '${userInput}'. Provide 2-3 concise, futuristic, and actionable data strategy insights or key questions they should consider. Frame these as if you are giving initial high-level advice. Format the output as a list.`;
+
+                    try {
+                        // In a real application, the API key should not be exposed here.
+                        // This is a placeholder for demonstration.
+                        const apiKey = "YOUR_API_KEY_HERE"; 
+                        if (apiKey === "YOUR_API_KEY_HERE") {
+                             throw new Error("API Key not configured.");
+                        }
+                        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${apiKey}`;
+                        
+                        const payload = {
+                            contents: [{ role: "user", parts: [{ text: prompt }] }]
+                        };
+
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+
+                        if (!response.ok) {
+                            const errorData = await response.json();
+                            throw new Error(errorData.error?.message || `API request failed with status ${response.status}`);
+                        }
+
+                        const result = await response.json();
+                        const text = result.candidates[0].content.parts[0].text;
+
+                        if (text) {
+                            let htmlText = text
+                                .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+                                .replace(/\*(.*?)\*/g, '<em>$1</em>')
+                                .replace(/^- (.*?)(\n|$)/gm, '<li class="mb-2 ml-5 list-disc">$1</li>')
+                                .replace(/\n/g, '<br>');
+                            aiInsightsResult.innerHTML = `<ul>${htmlText}</ul>`;
+                        } else {
+                            throw new Error("No content received from API.");
+                        }
+                    } catch (error) {
+                        aiInsightsResult.innerHTML = '';
+                        aiInsightsError.innerHTML = `<p>Failed to generate insights. ${error.message}</p>`;
+                        aiInsightsError.classList.remove('hidden');
+                    } finally {
+                        aiInsightsLoader.classList.add('hidden');
+                        getAiInsightsButton.disabled = false;
+                    }
+                });
+            }
+
+            // --- Standard Page Scripts ---
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenuButton) {
+                mobileMenuButton.addEventListener('click', () => {
+                    mobileMenu.classList.toggle('hidden');
+                });
+            }
+
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    const targetId = this.getAttribute('href');
+                    if (targetId === '#' || targetId.startsWith('#!')) return;
+
+                    e.preventDefault();
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        targetElement.scrollIntoView({ behavior: 'smooth' });
+                        if (mobileMenu && !mobileMenu.classList.contains('hidden')) {
+                            mobileMenu.classList.add('hidden');
+                        }
+                    }
+                });
+            });
+
+            document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+            const navbar = document.getElementById('navbar');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    navbar.classList.add('shadow-lg');
+                } else {
+                    navbar.classList.remove('shadow-lg');
+                }
+            });
+
+            // --- SCRIPT for Expanding Cards ---
+            const servicesContainer = document.getElementById('services-container');
+            if (servicesContainer) {
+                const cards = servicesContainer.querySelectorAll('.expanding-card');
+
+                const resetCards = () => {
+                    cards.forEach(card => {
+                        card.style.flexGrow = '1';
+                        const description = card.querySelector('.card-description');
+                        if (description) {
+                            description.style.maxHeight = '0';
+                            description.style.opacity = '0';
+                        }
+                    });
+                };
+
+                cards.forEach(hoveredCard => {
+                    hoveredCard.addEventListener('mouseenter', () => {
+                        cards.forEach(card => {
+                            const description = card.querySelector('.card-description');
+                            if (card === hoveredCard) {
+                                card.style.flexGrow = '8';
+                                if (description) {
+                                    description.style.maxHeight = '200px';
+                                    description.style.opacity = '1';
+                                }
+                            } else {
+                                card.style.flexGrow = '1';
+                                if (description) {
+                                    description.style.maxHeight = '0';
+                                    description.style.opacity = '0';
+                                }
+                            }
+                        });
+                    });
+                });
+
+                servicesContainer.addEventListener('mouseleave', resetCards);
+                
+                resetCards(); // Set initial state on page load
             }
         });
     </script>
-
 </body>
-</html>
+</html> 
